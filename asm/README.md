@@ -2,7 +2,7 @@
 
 This folder contains the 32- and 64-bit disassembled precompiled `x86_ldasm` binaries with some manual modifications, e.g. entrypoint jump, relative addressing for code position independence, etc.
 
-The precompiled binaries were compiled with GCC as follows: 
+The precompiled binaries have been compiled with GCC as follows: 
 
 ```bash
 # when compiling for 32-bit, add: -m32
