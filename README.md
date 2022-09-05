@@ -1,6 +1,6 @@
 # x86_ldasm
 
-`x86_ldasm` is a relatively compact x86-64 instruction length disassembler based on a stripped down and heavily modified version of [`x86_dasm`](https://github.com/thejanit0r/x86_dasm). It is fully C99 compliant.
+`x86_ldasm` is a relatively compact x86-64 **instruction length** disassembler based on a stripped down and heavily modified version of [`x86_dasm`](https://github.com/thejanit0r/x86_dasm). It is fully C99 compliant.
 
 - No external library dependencies
 - No dynamic memory allocation
