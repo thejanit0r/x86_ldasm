@@ -28,7 +28,7 @@ uint8_t code[] = {
 
 // Use the regular C library
 
-// disassemble 32-bit code
+// Disassemble 32-bit code
 int len = x86_ldasm(&x86_dctx, X86_DMODE_32BIT, code);
 
 if(len > 0)
@@ -36,7 +36,7 @@ if(len > 0)
     printf("Instruction's length: %02i", len);
     
     //
-    // print additional info such as:
+    // Print additional info such as:
     //      OPCODE, MODRM, SIB, DISP (see main.c)
     //
 }
@@ -47,7 +47,7 @@ if(len > 0)
 
 x86_ldasm_t x86_ldasm_pre = (x86_ldasm_t)x86_ldasm_bin;
 
-// disassemble 64-bit code, don't provide any dasm context struct
+// Disassemble 64-bit code, don't provide any dasm context struct
 int len = x86_ldasm_pre(NULL, 64, code);
 
 if(len > 0)
