@@ -35,8 +35,10 @@ if(len > 0)
 {
     printf("Instruction's length: %02i", len);
     
+    //
     // print additional info such as:
     //      OPCODE, MODRM, SIB, DISP (see main.c)
+    //
 }
 
 // Use the single-header precompiled library
