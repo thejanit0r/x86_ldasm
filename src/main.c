@@ -143,7 +143,7 @@ main(int argc, char* argv[])
 #if defined(_LDASM_PRECOMPILED_H_)
 
         /* test the pre-compiled version */
-        x86_ldasm_t x86_ldasm_pre = (x86_ldasm_t)x86_ldasm_bin;
+        x86_ldasm_t x86_ldasm_pre = (x86_ldasm_t)x86_ldasm_lin64_bin;
 
         if(x86_ldasm_pre(&x86_dctx, x86_dctx.dmode, &code[j]) != len)
         {

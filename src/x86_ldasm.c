@@ -693,8 +693,15 @@ static
 void
 decode_instruction(x86_dasm_context_t* x86_dctx)
 {
+#if defined(_LDASM_EXT_X86_TABLE)
+    
+    uint8_t* table_compressed = x86_dctx->table_compressed;
+    size_t table_size = x86_dctx->table_size;
+    
+#else
+    
     /* table generated with x86_gen_tables.c */
-    uint8_t x86_table_compressed[275] = 
+    volatile uint8_t table_compressed[] = 
     {
         0x41, 0x14, 0x12, 0x20, 0x41, 0x14, 0x12, 0x20, 0x41, 0x14, 0x12, 0x20, 0x41, 0x14, 0x12, 0x20, 
         0x41, 0x14, 0x12, 0x20, 0x41, 0x14, 0x12, 0x20, 0x41, 0x14, 0x12, 0x20, 0x41, 0x14, 0x12, 0xA4, 
@@ -715,19 +722,23 @@ decode_instruction(x86_dasm_context_t* x86_dctx)
         0x30, 0x11, 0x50, 0x31, 0x20, 0x21, 0x30, 0x11, 0x50, 0x31, 0xAC, 0x00, 0x11, 0x10, 0x11, 0xFF, 
         0x00, 0xEE, 0x00
     };
-
+    
+    size_t table_size = sizeof(table_compressed);
+    
+#endif
+    
     /* fetch the opcode and update the position */
     uint8_t opcode = x86_dctx->ip[x86_dctx->pos++];
 
     uint32_t flags = 0;
     size_t table_pos = x86_dctx->table_index + opcode;
 
-    for(size_t i = 0, j = 0; i < countof(x86_table_compressed); i++)
+    for(size_t i = 0, j = 0; i < table_size; i++)
     {
-        uint8_t d = x86_table_compressed[i];
+        uint8_t d = table_compressed[i];
         uint8_t s = ((d & 0x80) == 0 ? (d >> 4) : (d & ~0x80));
-
-        flags = ((d & 0x80) == 0 ? (d & 0x0F) : x86_table_compressed[++i]);
+        
+        flags = ((d & 0x80) == 0 ? (d & 0x0F) : table_compressed[++i]);
 
         /* check if the opcode's position falls between the boundary */
         if(table_pos < j + s)
@@ -909,12 +920,16 @@ decode_clear(x86_dasm_context_t* x86_dctx)
 int
 x86_ldasm(x86_dasm_context_t* x86_dctx, unsigned int dmode, uint8_t* ip)
 {
+#if !defined(_LDASM_EXT_X86_TABLE)
+    
     x86_dasm_context_t x86_dctx_local;
 
     if(x86_dctx == NULL)
     {
         x86_dctx = &x86_dctx_local;
     }
+    
+#endif
 
     /* clear the dasm context */
     decode_clear(x86_dctx);
@@ -946,3 +961,24 @@ x86_ldasm(x86_dasm_context_t* x86_dctx, unsigned int dmode, uint8_t* ip)
 
     return x86_dctx->len;
 }
+
+#if defined(_LDASM_EXT_X86_TABLE)
+
+int
+__attribute__((stdcall,optimize("O1")))
+x86_ldasm_ext_table(x86_dasm_context_t* x86_dctx, unsigned int dmode, uint8_t* ip)
+{
+    x86_dasm_context_t x86_dctx_local;
+
+    if(x86_dctx == NULL)
+    {
+        x86_dctx = &x86_dctx_local;
+    }
+    
+    x86_dctx->table_compressed = (uint8_t *)0xDEADC0DE;
+    x86_dctx->table_size = 0xBAADF00D;
+    
+    return x86_ldasm(x86_dctx, dmode, ip);
+}
+
+#endif

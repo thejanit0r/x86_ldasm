@@ -35,7 +35,7 @@ SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
 
-all: x86_ldasm
+all: x86_ldasm x86_gen_tables
 
 x86_gen_tables: $(OBJ_DIR)/x86_gen_tables.o $(OBJ_DIR)/x86_ldasm_tables.o
 > $(CC) $(LFLAGS) $^ -o $(BIN_DIR)/$@

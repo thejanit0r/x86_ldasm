@@ -22,7 +22,7 @@
 ;
 [BITS 32]
 
-	jmp x86_ldasm ; Entrypoint
+        jmp x86_ldasm ; Entrypoint
 
 get_pc_thunk:
         mov     eax, dword [esp]                        ; 0000 _ 8B. 04 24

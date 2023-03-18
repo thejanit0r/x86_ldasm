@@ -1,6 +1,6 @@
 # x86_ldasm
 
-`x86_ldasm` is a relatively compact x86-64 **instruction length** disassembler based on a stripped down and heavily modified version of [`x86_dasm`](https://github.com/thejanit0r/x86_dasm). It is fully C99 compliant.
+`x86_ldasm` is a relatively compact x86-64 **instruction length** disassembler (LDE) based on a stripped down and heavily modified version of [`x86_dasm`](https://github.com/thejanit0r/x86_dasm). It is fully C99 compliant.
 
 - No external library dependencies
 - No dynamic memory allocation
@@ -45,7 +45,7 @@ if(len > 0)
 
 #include "x86_ldasm_precompiled.h"
 
-x86_ldasm_t x86_ldasm_pre = (x86_ldasm_t)x86_ldasm_bin;
+x86_ldasm_t x86_ldasm_pre = (x86_ldasm_t)x86_ldasm_lin64_bin;
 
 // Disassemble 64-bit code, don't provide any dasm context struct
 int len = x86_ldasm_pre(NULL, 64, code);

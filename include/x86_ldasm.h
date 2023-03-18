@@ -118,6 +118,13 @@ typedef struct
     uint8_t p_vsib : 1;
 
     size_t table_index;
+    
+#if defined(_LDASM_EXT_X86_TABLE)
+    
+    uint8_t* table_compressed;
+    size_t table_size;
+    
+#endif
 
 } x86_dasm_context_t;
 

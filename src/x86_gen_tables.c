@@ -29,6 +29,9 @@
 
 #include "x86_ldasm.h"
 
+#define align_up(val, alignment) \
+    ((val + alignment - 1) - ((val + alignment - 1) % alignment))
+
 /*
     Packs the 4-bit information into a byte
     Table size reduction: 50% for both tables
@@ -112,10 +115,48 @@ table_gen_and_print(uint8_t* in, size_t size, const char* name)
     printf("\n};\n\n");
 }
 
+static
+void
+table_gen_and_print_asm_nodata(uint8_t* in, size_t size)
+{
+    /* output table, either compressed or packed */
+    uint8_t out[size];
+    
+    memset(out, 0, size);
+
+    /* compress the table */
+    int n = (int)table_compress(in, size, out);
+    
+    /* 32-bit */
+    printf("; --- 32-BIT --- TABLE SIZE: %08X\n", n);
+    
+    for(int i = align_up(n, sizeof(uint32_t)) - sizeof(uint32_t); 
+        i >= 0; i -= sizeof(uint32_t))
+    {
+        printf("push 0%08XH\n", *(uint32_t *)&out[i]);
+    }
+    
+    printf("add esp, 0%XH\n\n", (uint32_t)align_up(n, sizeof(uint32_t)));
+
+    /* 64-bit */
+    printf("; --- 64-BIT --- TABLE SIZE: %08X\n", n);
+    
+    for(int i = align_up(n, sizeof(uint64_t)) - sizeof(uint64_t); 
+        i >= 0; i -= sizeof(uint64_t))
+    {
+        // alt: mov rax, imm64; push rax
+        printf("push 0%08XH\n", *(uint32_t *)&out[i]);
+        printf("mov dword [rsp+04H], 0%08XH\n", *(uint32_t *)&out[i + sizeof(uint32_t)]);
+    }
+    
+    printf("add rsp, 0%XH\n\n", (uint32_t)align_up(n, sizeof(uint64_t)));
+}
+
 int 
 main(int argc, char* argv[])
 {
     table_gen_and_print(x86_table, countof(x86_table), "x86_table_compressed");
+    table_gen_and_print_asm_nodata(x86_table, countof(x86_table));
     
     return EXIT_SUCCESS;
 }
