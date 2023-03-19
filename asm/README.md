@@ -22,8 +22,8 @@ nasm -f bin -o <output.bin> <input.asm>
 # Notes
 
 - Calling conventions (https://wiki.osdev.org/Calling_Conventions)
-    - Linux (64-bit): rdi, rsi, rdx, rcx, r8, r9, stack...
-    - Windows (64-bit): rcx, rdx, r8, r9, stack...
+    - Linux (64-bit): `rdi`, `rsi`, `rdx`, `rcx`, `r8`, `r9`, `stack`
+    - Windows (64-bit): `rcx`, `rdx`, `r8`, `r9`, `stack`
 
 # License
 
