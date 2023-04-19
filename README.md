@@ -8,6 +8,11 @@
 - Extended information such as PREFIXES (incl. VEX/XOP), OPCODE, MODRM, SIB, DISP
 - **Single-header precompiled position independent code (32/64 bit)**
     - @`include/x86_ldasm_precompiled.h`
+    - Sources
+        - [x86_ldasm.lin32.asm](https://github.com/thejanit0r/x86_ldasm/blob/master/asm/x86_ldasm.lin32.asm)
+        - [x86_ldasm.lin64.asm](https://github.com/thejanit0r/x86_ldasm/blob/master/asm/x86_ldasm.lin64.asm)
+        - [x86_ldasm.win32.nodata.asm](https://github.com/thejanit0r/x86_ldasm/blob/master/asm/x86_ldasm.win32.nodata.asm)
+        - [x86_ldasm.win64.nodata.asm](https://github.com/thejanit0r/x86_ldasm/blob/master/asm/x86_ldasm.win64.nodata.asm)
 
 NB: This library is not particularly well-suited for disassembling "hostile" code (malformed, invalid, undefined behavior, etc.) since most of the error detection logic has been stripped out in favor of a smaller size. It should have no problems in correctly disassembling regular compiler-generated code.
 
